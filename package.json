@@ -1,0 +1,21 @@
+{
+  "name": "perfect",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "echo TODO, PRs welcome",
+    "test": "echo TODO"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/trusktr/perfect.git"
+  },
+  "author": "Joe Pea <joe@trusktr.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/trusktr/perfect/issues"
+  },
+  "homepage": "https://github.com/trusktr/perfect#readme",
+  "dependencies": {}
+}
