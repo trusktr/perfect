@@ -19,55 +19,47 @@ Requirements
 Basic Usage
 ===========
 
-```js
-import { performanceTest, testCase } from 'perfect'
+Basically:
 
-// describe the test
-performanceTest("Conditionally adding to a Set with and without checking .has(), assuming the Set already contains the item.",
+```js
+import { performanceTest } from 'perfect'
+
+performanceTests({
+
+    // describe the test
+    description: 'compare sorting algorithms',
+
+    iterations: 100000, // optional, default is 500000
 
     // define a test case
-    testCase('with .has()', {
+    'merge sort': {
 
         // setup anything you need for the test on `this`, which persists for
-        // every iteration of the test. Called only once.
-        setup() {
-            this.s = new Set
-            this.obj = {}
-            this.s.add(this.obj)
-        },
+        // every iteration of the test. Called only once, before all iterations
+        setup() {},
+
+        // called before each iteration
+        before() {},
 
         // The code to test. Called for each iteration. Receives start and end
         // markers. Wrap the specific part of the functionality you are testing
         // with start() and end() calls.
-        test(start, end) {
-            const {s, obj} = this
+        test(start, end) {},
 
-            start() // starts tracking time
+        // called after each iteration
+        after() {},
 
-            // this is the code we're trying to test
-            if (!s.has(obj))
-                s.add(obj)
+        // called only once, after all iterations
+        cleanup() {},
+    },
 
-            end() // stops tracking time
-        },
-    }),
-
-    // define another test case.
-    testCase('without .has()', {
-        setup() {
-            this.s = new Set
-            this.obj = {}
-            this.s.add(this.obj)
-        },
-        test(start, end) {
-            const {s, obj} = this
-
-            start()
-            s.add(obj)
-            end()
-        },
-    })
+    // define another test case
+    'quick sort': {
+        // ...
+    },
 
     // ...define any number of test cases to compare performance of...
 )
 ```
+
+See [examples](./examples/tests.js).
