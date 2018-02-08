@@ -13,13 +13,15 @@ are the fastest.
 Requirements
 ============
 
-- The source is not transpiled for older browsers (yet)0 so you may have to
+- The source is not transpiled for older browsers (yet) so you may have to
   transpile this in your own build setup.
 
 Basic Usage
 ===========
 
-Basically:
+See the [examples](./examples/tests.js).
+
+Basically,
 
 ```js
 import { performanceTest } from 'perfect'
@@ -31,35 +33,36 @@ performanceTests({
 
     iterations: 100000, // optional, default is 500000
 
-    // define a test case
-    'merge sort': {
+    testCases: {
 
-        // setup anything you need for the test on `this`, which persists for
-        // every iteration of the test. Called only once, before all iterations
-        setup() {},
+        // define a test case
+        'merge sort': {
 
-        // called before each iteration
-        before() {},
+            // setup anything you need for the test on `this`, which persists for
+            // every iteration of the test. Called only once, before all iterations
+            setup() {},
 
-        // The code to test. Called for each iteration. Receives start and end
-        // markers. Wrap the specific part of the functionality you are testing
-        // with start() and end() calls.
-        test(start, end) {},
+            // called before each iteration
+            before() {},
 
-        // called after each iteration
-        after() {},
+            // The code to test. Called for each iteration. Receives start and end
+            // markers. Wrap the specific part of the functionality you are testing
+            // with start() and end() calls.
+            test(start, end) {},
 
-        // called only once, after all iterations
-        cleanup() {},
+            // called after each iteration
+            after() {},
+
+            // called only once, after all iterations
+            cleanup() {},
+        },
+
+        // define another test case
+        'quick sort': {
+            // ...
+        },
+
+        // ...define any number of test cases to compare performance of...
     },
-
-    // define another test case
-    'quick sort': {
-        // ...
-    },
-
-    // ...define any number of test cases to compare performance of...
 )
 ```
-
-See [examples](./examples/tests.js).
