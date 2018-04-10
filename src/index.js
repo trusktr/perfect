@@ -1,4 +1,3 @@
-
 // detect the global (see https://stackoverflow.com/questions/3277182)
 // We do it this way because it works in strict mode AND in browsers that block
 // eval with CSP.
@@ -105,4 +104,4 @@ function runTestCase(name, iterations, logResults, {setup, before, test, after, 
     return {name, totalTime, averageTime}
 }
 
-export const version = '1.0.1'
+export const version = '1.1.0'

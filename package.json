@@ -1,6 +1,6 @@
 {
   "name": "perfect",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "PERFect, simple JavaScript PERFormance tests",
   "main": "index.js",
   "scripts": {
