@@ -1,3 +1,4 @@
+# common dev and OS files
 .DS_Store
 node_modules/
 dist/
@@ -10,3 +11,27 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+
+# ignore everything
+/*
+
+# but not source code or tests
+!/src
+!/tests
+
+# don't lock dependencies for library packages
+!/package-lock.json
+
+# not global build, to be published
+!/global.js
+
+# not config files
+!/.builderrc
+!/.npmrc
+!/babel.config.js
+!/buble.config.js
+!/jest.config.js
+!/webpack.config.js
+
+# all good projects have a README!
+!/README.md
