@@ -1,12 +1,36 @@
-export function performanceTest({description, iterations, testCases}) {
+
+// detect the global (see https://stackoverflow.com/questions/3277182)
+// We do it this way because it works in strict mode AND in browsers that block
+// eval with CSP.
+//
+// We need to do this because of Jest, it doesn't provide a normal global
+// context.
+let _global
+try {
+    _global = ( 42, eval )( 'this' )
+}
+catch(e) {
+    // best guess
+    _global = typeof window === 'object' ? window : global || {};
+}
+
+// in case the `performance` global isn't available (f.e. in Jest):
+const performance =
+    typeof _global.performance !== 'undefined' && _global.performance.now ?
+    _global.performance :
+    { now: Date.now.bind( Date ) }
+
+export function performanceTest({ description, testCases, iterations, logResults }) {
     iterations = iterations || 500000
     const results = []
 
-    console.log(` --- PERFORMANCE TEST: "${description}"`)
-    console.log('   -- RUNNING... ')
+    if ( logResults ) {
+        console.log(` --- PERFORMANCE TEST: "${description}"`)
+        console.log('   -- RUNNING... ')
+    }
 
     for (const test in testCases) {
-        results.push( runTestCase( test, iterations, testCases[test] ) )
+        results.push( runTestCase( test, iterations, logResults, testCases[test] ) )
     }
 
     let slowest = results[0]
@@ -19,16 +43,23 @@ export function performanceTest({description, iterations, testCases}) {
             fastest = result
     }
 
-    console.log('   -- DONE! Results: ')
-    console.log(`     -- SLOWEST: "${slowest.name}"`)
-    console.log(`       - total time: ${slowest.totalTime}`)
-    console.log(`       - average time: ${slowest.averageTime}`)
-    console.log(`     -- FASTEST: "${fastest.name}"`)
-    console.log(`       - total time: ${fastest.totalTime}`)
-    console.log(`       - average time: ${fastest.averageTime}`)
+    if ( logResults ) {
+        console.log('   -- DONE! Results: ')
+        console.log(`     -- SLOWEST: "${slowest.name}"`)
+        console.log(`       - total time: ${slowest.totalTime}`)
+        console.log(`       - average time: ${slowest.averageTime}`)
+        console.log(`     -- FASTEST: "${fastest.name}"`)
+        console.log(`       - total time: ${fastest.totalTime}`)
+        console.log(`       - average time: ${fastest.averageTime}`)
+    }
+
+    return {
+        slowest,
+        fastest,
+    }
 }
 
-function runTestCase(name, iterations, {setup, before, test, after, cleanup}) {
+function runTestCase(name, iterations, logResults, {setup, before, test, after, cleanup}) {
     if (!test) throw new Error('Um, you need a test.')
 
     const context = {}
@@ -38,7 +69,9 @@ function runTestCase(name, iterations, {setup, before, test, after, cleanup}) {
     let startTime
     let endTime
 
-    console.log(`     -- TEST CASE: "${name}" -- `)
+    if ( logResults ) {
+        console.log(`     -- TEST CASE: "${name}" -- `)
+    }
 
     if (setup) setup.call(context, context)
 
@@ -64,8 +97,10 @@ function runTestCase(name, iterations, {setup, before, test, after, cleanup}) {
 
     averageTime = totalTime/iterations
 
-    console.log(`       - total time: ${totalTime}`)
-    console.log(`       - average time: ${averageTime}`)
+    if ( logResults ) {
+        console.log(`       - total time: ${totalTime}`)
+        console.log(`       - average time: ${averageTime}`)
+    }
 
     return {name, totalTime, averageTime}
 }
