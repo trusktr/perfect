@@ -104,3 +104,5 @@ function runTestCase(name, iterations, logResults, {setup, before, test, after, 
 
     return {name, totalTime, averageTime}
 }
+
+export const version = '1.0.1'
